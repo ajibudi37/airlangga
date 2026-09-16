@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1220">
+<title>Scanner Presensi - E-Presensi</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}html,body{min-height:100%;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#070d18;color:#f8fafc}body{padding:14px}.app{width:min(520px,100%);margin:auto}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.brand{display:flex;gap:10px;align-items:center}.logo{width:38px;height:38px;border-radius:12px;background:#172554;display:grid;place-items:center;font-weight:900;color:#93c5fd}.brand h1{font-size:15px}.brand p{font-size:9px;letter-spacing:1.3px;color:#64748b;margin-top:2px}.clock{text-align:right;color:#94a3b8;font-size:10px}.clock strong{display:block;color:#e2e8f0;font-size:15px}.card{overflow:hidden;border:1px solid #1e293b;border-radius:20px;background:#0b1220;box-shadow:0 20px 60px #0008}.head{padding:18px;border-bottom:1px solid #172033}.head h2{font-size:20px}.head p{font-size:11px;color:#94a3b8;line-height:1.6;margin-top:6px}.controls{padding:12px 18px;display:flex;gap:8px}.manual{display:flex;gap:7px;flex:1}.manual input{min-width:0;flex:1;background:#07101d;color:#fff;border:1px solid #26364d;border-radius:12px;padding:11px 12px;outline:none;font-size:13px}.manual input:focus{border-color:#60a5fa}.btn{border:0;border-radius:11px;padding:11px 13px;background:#2563eb;color:white;font-weight:800;font-size:11px;cursor:pointer}.btn.secondary{background:#172033;border:1px solid #29384d}.camera{position:relative;margin:0 18px;min-height:340px;border-radius:18px;overflow:hidden;background:#000;border:1px solid #26364d}.camera video{width:100%;height:100%;min-height:340px;display:block;object-fit:cover;background:#000}.camera canvas{display:none}.shade{position:absolute;inset:0;background:linear-gradient(180deg,#0004,#0000 30%,#0005)}.frame{position:absolute;width:220px;height:220px;left:50%;top:50%;transform:translate(-50%,-50%);transition:.2s}.frame.found{transform:translate(-50%,-50%) scale(1.04)}.corner{position:absolute;width:30px;height:30px;border-color:#60a5fa;border-style:solid}.tl{left:0;top:0;border-width:4px 0 0 4px;border-radius:8px 0 0}.tr{right:0;top:0;border-width:4px 4px 0 0;border-radius:0 8px 0 0}.bl{left:0;bottom:0;border-width:0 0 4px 4px;border-radius:0 0 0 8px}.br{right:0;bottom:0;border-width:0 4px 4px 0;border-radius:0 0 8px}.scanline{position:absolute;left:8px;right:8px;top:8px;height:2px;background:#60a5fa;box-shadow:0 0 10px #60a5fa;animation:scan 1.8s linear infinite}@keyframes scan{to{top:210px;opacity:.1}}.loading{position:absolute;z-index:4;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;background:#020617e8;color:#cbd5e1;font-size:12px;text-align:center;padding:20px}.spinner{width:36px;height:36px;border:3px solid #1e293b;border-top-color:#60a5fa;border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.cameraStatus{position:absolute;z-index:3;bottom:12px;left:12px;right:12px;padding:10px;border-radius:10px;text-align:center;background:#020617b8;backdrop-filter:blur(6px);font-size:11px;color:#cbd5e1}.cameraStatus.ok{color:#86efac}.cameraStatus.err{color:#fca5a5}.actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:12px 18px}.result{display:none;margin:0 18px 18px;padding:15px;border-radius:15px;border:1px solid #26364d;background:#07101d}.result.show{display:block}.result.ok{border-color:#065f46;background:#052e2a}.result.err{border-color:#7f1d1d;background:#2a0d12}.label{font-size:9px;text-transform:uppercase;letter-spacing:1.2px;color:#94a3b8}.name{font-size:18px;font-weight:900;margin-top:5px}.meta{font-size:11px;color:#cbd5e1;margin-top:4px}.msg{font-size:12px;font-weight:800;margin-top:10px}.info{text-align:center;color:#64748b;font-size:10px;line-height:1.6;padding:0 18px 18px}.permission{display:none;margin:12px 18px;padding:12px;border-radius:12px;background:#241b08;border:1px solid #6b4f16;color:#fde68a;font-size:11px;line-height:1.5}.permission.show{display:block}.permission button{margin-top:8px}.footer{padding:0 18px 18px;text-align:center;color:#475569;font-size:9px}@media(max-width:560px){body{padding:8px}.controls{flex-direction:column}.actions{grid-template-columns:1fr 1fr}.actions .btn:last-child{grid-column:1/-1}.camera,.result{margin-left:14px;margin-right:14px}.camera,.camera video{min-height:320px}.head{padding:15px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top"><div class="brand"><div class="logo">QR</div><div><h1>E-PRESENSI</h1><p>SCANNER OTOMATIS SISWA</p></div></div><div class="clock"><span id="day">-</span><strong id="time">--:--:--</strong></div></div>
+  <div class="card">
+    <div class="head"><h2>Scanner Presensi</h2><p>Tidak perlu memilih kelas atau tanggal. QR/NISN akan dicari langsung ke database, kemudian server menentukan nama, kelas, tanggal, jam dan status presensi.</p></div>
+    <div class="controls"><div class="manual"><input id="manualNisn" inputmode="numeric" autocomplete="off" placeholder="Input NISN manual"><button class="btn" id="manualBtn">Kirim</button></div><button class="btn secondary" id="focusBtn">⌨ Manual</button></div>
+    <div id="permission" class="permission"><b>Akses kamera belum diberikan.</b><br>Tekan tombol di bawah, lalu pilih <b>Allow / Izinkan</b> pada dialog kamera Chrome.<br><button class="btn" id="permissionBtn">Izinkan Kamera</button></div>
+    <div class="camera"><div id="loading" class="loading"><div class="spinner"></div><span id="loadingText">Menyiapkan kamera...</span></div><video id="video" autoplay playsinline muted></video><canvas id="canvas"></canvas><div class="shade"></div><div id="frame" class="frame"><div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div><div class="scanline"></div></div><div id="cameraStatus" class="cameraStatus">Meminta izin kamera...</div></div>
+    <div class="actions"><button class="btn" id="restartBtn">↻ Restart Kamera</button><button class="btn secondary" id="switchBtn">⇄ Ganti Kamera</button><button class="btn secondary" id="stopBtn">■ Stop</button></div>
+    <div id="result" class="result"><div class="label" id="resultLabel">Hasil Scan</div><div class="name" id="resultName">-</div><div class="meta" id="resultMeta">-</div><div class="msg" id="resultMsg">-</div></div>
+    <div class="info">Kamera menggunakan <b>getUserMedia()</b> pada halaman HTTPS. Setelah QR terbaca, data dikirim ke Google Apps Script melalui endpoint JSONP sehingga scanner tidak bergantung pada <code>google.script.run</code>.</div>
+    <div class="footer">E-Presensi • Scanner eksternal HTTPS</div>
+  </div>
+</div>
+<script>
+'use strict';
+const params=new URLSearchParams(location.search);
+/*
+ * URL Web App Google Apps Script yang benar-benar aktif.
+ * Isi setelah deployment Apps Script selesai.
+ *
+ * Contoh:
+ * https://script.google.com/macros/s/DEPLOYMENT_ID/exec
+ *
+ * Parameter ?gas=... tetap didukung untuk testing dan link yang dibuat
+ * otomatis dari admin.
+ */
+const GAS_URL=params.get('gas')||
+  'https://script.google.com/macros/s/AKfycbyyMPKUBCJCSPnFDKo33ZGhaFsnMHNPsnlCkpSrxh4nbC2wmLLLl1b__Ckyn5_q_mTnZw/exec';
+let stream=null,facing='environment',scanning=false,busy=false,lastValue='',lastAt=0,detector=null,rafId=null,intervalId=null,jsqrPromise=null;
+const video=document.getElementById('video'),canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d',{willReadFrequently:true});
+const loading=document.getElementById('loading'),loadingText=document.getElementById('loadingText'),statusEl=document.getElementById('cameraStatus'),permission=document.getElementById('permission'),frame=document.getElementById('frame');
+function cleanNisn(v){return String(v??'').trim().replace(/[^a-zA-Z0-9]/g,'')}
+function status(t,c=''){statusEl.textContent=t;statusEl.className='cameraStatus'+(c?' '+c:'')}
+function clock(){const d=new Date();document.getElementById('day').textContent=d.toLocaleDateString('id-ID',{weekday:'long',day:'2-digit',month:'short'});document.getElementById('time').textContent=d.toLocaleTimeString('id-ID',{hour12:false})}setInterval(clock,1000);clock();
+function checkEnvironment(){
+  if(location.protocol!=='https:'&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1'){
+    status('Scanner harus dibuka melalui HTTPS.','err');
+    loadingText.textContent='URL scanner bukan HTTPS';
+    return false;
+  }
+  if(!GAS_URL || GAS_URL.includes('PASTE_URL_WEB_APP_GOOGLE_APPS_SCRIPT_DI_SINI')){
+    status('URL Web App Google Apps Script belum dikonfigurasi.','err');
+    loadingText.textContent='Isi GAS_URL di index.html atau buka dari tombol scanner admin';
+    return false;
+  }
+  try{
+    const u=new URL(GAS_URL);
+    if(u.protocol!=='https:' || u.hostname!=='script.google.com'){
+      status('URL backend Apps Script tidak valid.','err');
+      loadingText.textContent='Gunakan URL Web App .../exec';
+      return false;
+    }
+  }catch(e){
+    status('URL backend Apps Script tidak valid.','err');
+    loadingText.textContent='Gunakan URL Web App .../exec';
+    return false;
+  }
+  return true;
+}
+async function requestCamera(){if(!checkEnvironment())return;stopLoop();if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;permission.classList.remove('show');loading.style.display='flex';loadingText.textContent='Meminta izin kamera Chrome...';status('Meminta izin kamera...');try{if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw new Error('Browser tidak menyediakan getUserMedia. Pastikan Chrome terbaru dan halaman HTTPS.');stream=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:facing},width:{ideal:1280},height:{ideal:720}}});video.srcObject=stream;await video.play();loading.style.display='none';scanning=true;status('Arahkan QR siswa ke dalam kotak');beginScan()}catch(e){loading.style.display='none';permission.classList.add('show');const msg=e&&e.name==='NotAllowedError'?'Izin kamera ditolak. Izinkan Camera untuk alamat situs ini pada ikon kamera di address bar Chrome, kemudian tekan Restart Kamera.':e&&e.name==='NotFoundError'?'Tidak ada kamera yang ditemukan pada perangkat.':e&&e.name==='NotReadableError'?'Kamera sedang digunakan aplikasi/tab lain. Tutup aplikasi yang memakai kamera lalu coba lagi.':e&&e.name==='SecurityError'?'Chrome memblokir kamera karena konteks keamanan halaman. Pastikan scanner dibuka dari HTTPS.':(e.message||e.name||'Kamera gagal');status(msg,'err');loadingText.textContent='Kamera belum aktif'}}
+function stopLoop(){if(rafId){cancelAnimationFrame(rafId);rafId=null}if(intervalId){clearInterval(intervalId);intervalId=null}scanning=false}
+function stopCamera(){stopLoop();if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}video.srcObject=null;loading.style.display='none';status('Kamera dihentikan. Tekan Restart Kamera.')}
+function switchCamera(){facing=facing==='environment'?'user':'environment';requestCamera()}
+function beginScan(){if('BarcodeDetector'in window){try{detector=new BarcodeDetector({formats:['qr_code']});scanNative();return}catch(e){}}loadJsQr().then(scanJsQr).catch(()=>status('Pembaca QR gagal dimuat. Gunakan input NISN manual.','err'))}
+async function scanNative(){if(!scanning)return;if(video.readyState>=video.HAVE_ENOUGH_DATA&&!busy){try{const codes=await detector.detect(video);if(codes.length)handleDecoded(codes[0].rawValue)}catch(e){}}rafId=requestAnimationFrame(scanNative)}
+function loadJsQr(){if(window.jsQR)return Promise.resolve();if(jsqrPromise)return jsqrPromise;jsqrPromise=new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js';s.onload=resolve;s.onerror=reject;document.head.appendChild(s)});return jsqrPromise}
+function scanJsQr(){if(!scanning)return;intervalId=setInterval(()=>{if(!scanning||busy||video.readyState<video.HAVE_ENOUGH_DATA)return;canvas.width=video.videoWidth;canvas.height=video.videoHeight;ctx.drawImage(video,0,0,canvas.width,canvas.height);try{const d=ctx.getImageData(0,0,canvas.width,canvas.height),c=window.jsQR(d.data,d.width,d.height,{inversionAttempts:'attemptBoth'});if(c&&c.data)handleDecoded(c.data)}catch(e){}},250)}
+function handleDecoded(raw){const nisn=cleanNisn(raw);if(!nisn)return;const now=Date.now();if(nisn===lastValue&&now-lastAt<2500)return;lastValue=nisn;lastAt=now;frame.classList.add('found');setTimeout(()=>frame.classList.remove('found'),500);processNisn(nisn,'QR')}
+function submitManual(){const nisn=cleanNisn(document.getElementById('manualNisn').value);if(!nisn){document.getElementById('manualNisn').focus();return}document.getElementById('manualNisn').value='';processNisn(nisn,'MANUAL')}
+function processNisn(nisn,source){if(busy)return;if(!GAS_URL){status('Backend tidak ditemukan.','err');return}busy=true;stopLoop();status(source+' terdeteksi — mencari siswa...');jsonpScan(nisn).then(res=>{busy=false;showResult(res,!!res.success);if(res.success){beep(true);status('✓ '+(res.message||'Presensi berhasil')+' — kamera aktif kembali','ok');postToOpener(res);setTimeout(()=>{if(stream){scanning=true;beginScan()}},450)}else{beep(false);status('✕ '+(res.message||'Presensi ditolak'),'err');postToOpener(res);setTimeout(()=>{if(stream){scanning=true;beginScan()}},700)}}).catch(err=>{busy=false;beep(false);showResult({message:err.message||'Gagal menghubungi server'},false);status('✕ Gagal menghubungi server','err');setTimeout(()=>{if(stream){scanning=true;beginScan()}},700)})}
+function jsonpScan(nisn){return new Promise((resolve,reject)=>{const cb='epScan_'+Date.now()+'_'+Math.random().toString(36).slice(2);const script=document.createElement('script');let done=false;const timer=setTimeout(()=>finish(new Error('Server tidak merespons dalam 15 detik.')),15000);function finish(v,err){if(done)return;done=true;clearTimeout(timer);try{delete window[cb]}catch(e){window[cb]=undefined}script.remove();err?reject(err):resolve(v)}window[cb]=r=>finish(r);script.onerror=()=>finish(null,new Error('Endpoint Apps Script tidak dapat diakses. Pastikan deployment dapat diakses oleh siapa saja yang memiliki link.'));script.src=GAS_URL+(GAS_URL.includes('?')?'&':'?')+'action=scanAuto&nisn='+encodeURIComponent(nisn)+'&callback='+encodeURIComponent(cb)+'&_='+Date.now();document.head.appendChild(script)})}
+function showResult(res,ok){
+  const box=document.getElementById('result');
+  box.className='result show '+(ok?'ok':'err');
+  document.getElementById('resultLabel').textContent=ok?'Presensi Tercatat':'Presensi Ditolak';
+  document.getElementById('resultName').textContent=res.nama||('NISN '+(res.scannedNisn||''));
+  document.getElementById('resultMeta').textContent=[
+    res.nisn||res.scannedNisn,
+    res.kelas,
+    res.tanggal,
+    res.jamDatang ? 'Masuk '+res.jamDatang : '',
+    res.jamSholat ? 'Sholat '+res.jamSholat : '',
+    res.jamPulang ? 'Pulang '+res.jamPulang : ''
+  ].filter(Boolean).join(' • ')||'Data siswa';
+  document.getElementById('resultMsg').textContent=res.message||'Selesai';
+}
+function postToOpener(res){
+  try{
+    if(window.opener && !window.opener.closed){
+      window.opener.postMessage({
+        type:'EPRESENSI_SCAN_RESULT',
+        result:res
+      },'*');
+    }
+  }catch(e){}
+}
+function beep(ok){try{const A=AudioContext||webkitAudioContext,a=new A(),o=a.createOscillator(),g=a.createGain();o.frequency.value=ok?880:220;g.gain.value=.04;o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+.18)}catch(e){}}
+document.getElementById('manualBtn').onclick=submitManual;document.getElementById('focusBtn').onclick=()=>document.getElementById('manualNisn').focus();document.getElementById('manualNisn').addEventListener('keydown',e=>{if(e.key==='Enter')submitManual()});document.getElementById('restartBtn').onclick=requestCamera;document.getElementById('switchBtn').onclick=switchCamera;document.getElementById('stopBtn').onclick=stopCamera;document.getElementById('permissionBtn').onclick=requestCamera;window.addEventListener('beforeunload',stopCamera);
+checkEnvironment();requestCamera();
+</script>
+</body>
+</html>
