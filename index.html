@@ -108,6 +108,39 @@ function beep(ok){try{const A=AudioContext||webkitAudioContext,a=new A(),o=a.cre
 document.getElementById('manualBtn').onclick=submitManual;document.getElementById('focusBtn').onclick=()=>document.getElementById('manualNisn').focus();document.getElementById('manualNisn').addEventListener('keydown',e=>{if(e.key==='Enter')submitManual()});document.getElementById('restartBtn').onclick=requestCamera;document.getElementById('switchBtn').onclick=switchCamera;document.getElementById('stopBtn').onclick=stopCamera;document.getElementById('permissionBtn').onclick=requestCamera;window.addEventListener('beforeunload',stopCamera);
 
 checkEnvironment();requestCamera();
+  function processNisn(nisn, source) {
+  if (busy) return;
+  if (!GAS_URL) { status('Backend tidak ditemukan.', 'err'); return; }
+  busy = true;
+  stopLoop();
+  status(source + ' terdeteksi — mencari data murid...');
+  
+  jsonpScan(nisn).then(res => {
+    busy = false;
+    showResult(res, !!res.success);
+    
+    // Kirim hasil ke jendela utama (Front-End)
+    postToOpener(res);
+
+    if (res.success) {
+      beep(true);
+      status('✓ ' + (res.message || 'Presensi berhasil') + ' — menutup kamera...', 'ok');
+      // Otomatis tutup jendela kamera setelah 400ms
+      setTimeout(() => { window.close(); }, 400);
+    } else {
+      beep(false);
+      status('✕ ' + (res.message || 'Presensi ditolak'), 'err');
+      // Tetap tutup jendela agar operator bisa memproses/melihat pesan di front-end
+      setTimeout(() => { window.close(); }, 800);
+    }
+  }).catch(err => {
+    busy = false;
+    beep(false);
+    showResult({ message: err.message || 'Gagal menghubungi server' }, false);
+    status('✕ Gagal menghubungi server', 'err');
+    setTimeout(() => { window.close(); }, 1000);
+  });
+}
 </script>
 </body>
 </html>
