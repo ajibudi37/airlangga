@@ -26,7 +26,7 @@
 'use strict';
 const params=new URLSearchParams(location.search);
 // Default GAS_URL dapat diisi jika Anda ingin mengakses langsung scanner ini dari HP secara terpisah
-const GAS_URL=params.get('gas')||'https://script.google.com/macros/s/AKfycbyE1E7JTu3qysc1E69sP9_fdzLem1m5lR4ILf_vxNaHezO_GLknuxOyQNatKirRFeSD/exec';
+const GAS_URL=params.get('gas')||'https://script.google.com/macros/s/AKfycbyfUMLVIcnUun7kYL6hj1oSk4C9qzvho_JaWILxf2k2wQv3wacJtBZ_2dIpLpfp9K9a/exec';
 
 let stream=null,facing='environment',scanning=false,busy=false,lastValue='',lastAt=0,detector=null,rafId=null,intervalId=null,jsqrPromise=null;
 const video=document.getElementById('video'),canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d',{willReadFrequently:true});
